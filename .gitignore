@@ -4,3 +4,7 @@ node_modules/
 .env
 build/
 dist/
+.DS_Store
+Archive.zip
+Archive2.zip
+**/.DS_Store
