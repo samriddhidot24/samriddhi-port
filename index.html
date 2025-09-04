@@ -3,340 +3,226 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Samriddhi Tiwari — Portfolio</title>
+  <title>Samriddhi — Homepage</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Kalnia:wght@700&family=Kameron:wght@400;700&display=swap" rel="stylesheet">
-<!-- Favicon (uses the same UXAI logo) -->
-<link rel="icon" type="image/svg+xml" href="assets/UXAI_LOGO.svg">
-<!-- Optional fallbacks if you export PNGs later -->
-<!-- <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png"> -->
-<!-- <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png"> -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/UXAI_LOGO.svg">
 
   <style>
     :root{
-      --bg:#242424;
-      --text:#f2f2f2;
-      --muted:#c7c7c7;
-      --brand-1:#E00058; --brand-2:#950089; --brand-3:#620088; --brand-4:#B4687D; --brand-5:#FFC954;
-      --seg-bg:linear-gradient(90deg, #EC0F6A, #F26D5F 50%, #FFC76B);
-      --nav-h:76px;
-      --container:1200px;
+      --bg:#1A1A1A;
+      --header-bg:#333333;
+      --text:#EDEDED;
+      --muted:#808080;
+      --card:#262626;
+      --page-x:120px;
+      --grad:linear-gradient(90deg,#E0005A,#950089,#620088,#B46870,#FFC954);
     }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%;height:auto}
 
-    html,body{height:100%} *{box-sizing:border-box}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-      line-height:1.45;
-    }
+    /* Type */
+    h1,h2,h3,h4{font-family:"Space Grotesk",sans-serif;font-weight:700;margin:0}
+    p,li,nav,button{font-family:"JetBrains Mono",monospace}
 
-    /* ===== NAV (76px) ===== */
-    .nav-wrap{ position:sticky; top:0; z-index:50; backdrop-filter:blur(14px);
-      background:linear-gradient(to bottom, rgba(15,15,15,.35), rgba(15,15,15,.15));
-      border-bottom:1px solid rgba(255,255,255,.06);
+    /* ===== Header (reusable) ===== */
+    header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(51,51,51,.65);
+      backdrop-filter:saturate(140%) blur(12px);
+      -webkit-backdrop-filter:saturate(140%) blur(12px);
     }
-    .nav{
-      max-width:var(--container); margin:0 auto; height:var(--nav-h);
-      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:20px; padding:0 20px;
-    }
-    .brand{ display:flex; align-items:center; gap:12px }
-    .avatar{ width:54px; height:54px; border-radius:999px; overflow:hidden; position:relative;
-      background: radial-gradient(120px 120px at 30% 30%, rgba(255,255,255,.09), rgba(255,255,255,0) 60%),
-                  linear-gradient(180deg, rgba(0,0,0,.35), rgba(255,255,255,.05));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 4px 18px rgba(0,0,0,.35);
-    }
-    .avatar img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.02) }
-    .avatar-chip{ width:0; opacity:0; overflow:hidden; white-space:nowrap; transition:all .35s ease;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); padding:10px 14px; border-radius:999px; font-size:14px;
-    }
-    .brand:hover .avatar-chip{ width:280px; opacity:1 }
+    .header-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 var(--page-x);min-height:80px}
 
-    .links.center{ justify-self:center; display:flex; align-items:center; gap:36px; font-weight:500 }
-    .links.center a{ color:var(--text); text-decoration:none; padding:10px 14px; border-radius:10px; transition:all .2s ease }
-    .links.center a:hover{ background:rgba(255,255,255,.06); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08) }
-    .divider{ width:1px; height:18px; background:rgba(255,255,255,.12) }
-    .actions{ justify-self:end; display:flex; align-items:center; gap:12px }
+    .brand{position:relative;display:flex;align-items:center}
+    .brand img{width:52px;height:52px;border-radius:50%}
 
-    /* Buttons (icon-only animations on hover) */
-    .btn{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer; }
-    .btn img{ width:20px; height:20px; transition: transform .25s ease }
-    .btn-ghost{ color:var(--text); padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04) }
-    .btn-ghost:hover img{ transform: translateX(6px) rotate(10deg) }
+    /* minimalist grey glossy hello chip */
+    .hello-badge{position:absolute;left:64px;top:50%;transform:translateY(-50%) translateX(-6px);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+    .hello-chip{
+      position:relative;display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:14px;white-space:nowrap;
+      font:600 14px "JetBrains Mono",monospace;color:#F5F5F5;
+      background:#2b2b2b; /* base */
+      background-image:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 10px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .hello-chip::before{content:"";position:absolute;left:-7px;top:50%;transform:translateY(-50%) rotate(45deg);width:10px;height:10px;background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,.05));border-left:1px solid rgba(255,255,255,.18);border-top:1px solid rgba(255,255,255,.18)}
+    .brand:hover .hello-badge{opacity:1;transform:translateY(-50%) translateX(0)}
 
-    /*
-      Resume button — glossy, rounded, with animated border and shine.
-      Uses CSS vars so we can reuse it in compact contexts (nav/footer).
-    */
-    .btn-resume{
-      /* sizing */
-      --h: 76px;           /* overall height */
-      --px: 36px;          /* horizontal padding inside */
-      --fs: 36px;          /* font size */
-      --r: 38px;           /* corner radius */
-      position: relative; display: inline-block; color: var(--text); text-decoration: none;
-      border-radius: var(--r); padding: 3px; isolation: isolate;
-      /* soft white stroke with subtle sweep */
+    /* center the nav perfectly */
+    .nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:24px;align-items:center;white-space:nowrap}
+    .nav a{font:600 18px "JetBrains Mono",monospace;padding:8px 12px;border-radius:10px}
+    .nav a:hover{background:#3D3D3D}
+
+    .actions{display:flex;gap:16px;align-items:center;white-space:nowrap}
+
+    /* CTAs */
+    .touch,.resume-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 16px;border-radius:12px;
+      font:600 16px "JetBrains Mono",monospace;cursor:pointer
+    }
+    .touch:hover{background:#3D3D3D}
+    /* Resume: glossy animated gradient white border */
+    .resume-btn{
+      border:1px solid transparent;
       background:
-        radial-gradient(100% 100% at 50% -60%, rgba(255,255,255,.45), rgba(255,255,255,.08) 60%) top/100% 100% no-repeat,
-        linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,255,255,.25), rgba(255,255,255,.12), rgba(255,255,255,.25), rgba(255,255,255,.85));
-      background-size: 100% 100%, 300% 100%;
-      animation: resumeStroke 6s linear infinite;
-      box-shadow: 0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
+        linear-gradient(#1f1f1f,#1f1f1f) padding-box,
+        linear-gradient(120deg,rgba(255,255,255,.9),rgba(255,255,255,.3),rgba(255,255,255,.9)) border-box;
+      background-size:100% 100%,300% 100%;
+      animation:borderSlide 6s linear infinite;
     }
-    .btn-resume>span{
-      position: relative; display:flex; align-items:center; justify-content:center; gap:18px;
-      height: calc(var(--h) - 6px); padding: 0 var(--px);
-      border-radius: calc(var(--r) - 3px);
-      font-weight: 900; letter-spacing: .12em; font-size: var(--fs);
-      background:
-        radial-gradient(260px 180px at 50% -70%, rgba(255,255,255,.22), rgba(255,255,255,0) 60%),
-        linear-gradient(180deg, #313131, #2b2b2b 48%, #262626);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), inset 0 -8px 22px rgba(0,0,0,.45);
-      overflow: hidden;
-    }
-    /* moving shine on hover */
-    .btn-resume>span::after{
-      content:""; position:absolute; inset:-40% -120% -40% auto;
-      background:linear-gradient(100deg, transparent 35%, rgba(255,255,255,.65) 50%, transparent 65%);
-      transform: translateX(-60%);
-      transition: transform .9s cubic-bezier(.22,.8,.22,1);
-      pointer-events:none;
-    }
-    .btn-resume:hover>span::after{ transform: translateX(120%) }
-    .btn-resume img{ width:40px; height:40px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); transition: transform .35s ease, filter .35s ease }
-    .btn-resume:hover img{ transform: translateY(-3px) rotate(-10deg) scale(1.06); filter: drop-shadow(0 6px 10px rgba(0,0,0,.45)) }
-    @keyframes resumeStroke{ from{ background-position: 0 0, 0 0 } to{ background-position: 0 0, 300% 0 } }
+    @keyframes borderSlide{to{background-position:0 0,300% 0}}
+    .resume-btn img,.touch img{transition:transform .4s ease}
+    .resume-btn:hover img{transform:translateY(-3px) rotate(-10deg) scale(1.05)}
+    .touch:hover img{transform:translateX(5px) rotate(8deg)}
 
-    /* compact variant for nav/footer */
-    .btn-resume.compact{ --h: 50px; --px: 18px; --fs: 18px; --r: 14px }
-    .btn-resume.compact img{ width:22px; height:22px }
+    /* ===== Roller (marquee) ===== */
+    .marquee{position:relative;display:flex;align-items:center;background:var(--grad);overflow:hidden;height:32px;margin-top:32px}
+    .marquee::before,.marquee::after{content:"";position:absolute;left:0;right:0;height:2px;pointer-events:none}
+    .marquee::before{top:0;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.06))}
+    .marquee::after{bottom:0;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.28))}
+    .marquee-track{display:block;white-space:nowrap;line-height:1;animation:mar 28s linear infinite}
+    .marquee-track span{font:400 18px "JetBrains Mono",monospace;margin:0 8px}
+    .marquee-track .sep::after{content:"|";margin:0 8px;opacity:.65}
+    @keyframes mar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* ===== Role marquee ===== */
-    .marquee-wrap{ margin-top:32px }
-    .marquee{ height:32px; overflow:hidden; border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);
-      background:linear-gradient(90deg,var(--brand-1),var(--brand-2),var(--brand-3),var(--brand-4),var(--brand-5));
-      box-shadow:inset 0 6px 18px rgba(0,0,0,.25);
-      position:relative;
-    }
-    .marquee .track{ position:absolute; white-space:nowrap; color:#fff; font:400 18px/32px Inter, system-ui, sans-serif; letter-spacing:.4px;
-      text-shadow:0 1px 0 rgba(0,0,0,.35); animation:move 18s linear infinite; }
-    @keyframes move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    /* ===== Hero ===== */
+    .hero{display:grid;grid-template-columns:1.25fr 1fr;gap:50px;align-items:center;margin:102px var(--page-x) 0}
 
-    .container{ max-width:var(--container); margin:0 auto; padding:0 20px }
+    /* frame + icons: align to figma-like grid */
+    .icon-frame{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#222;padding:36px 48px;width:820px;height:344px;max-width:100%}
+    .icon-frame::after{content:"";position:absolute;inset:0;pointer-events:none;/* subtle inner grid lines like Figma */background:
+      /* horizontal (middle) */
+      linear-gradient(transparent calc(50% - .5px), rgba(255,255,255,.06) 0, rgba(255,255,255,.06) calc(50% + .5px), transparent 0),
+      /* vertical thirds */
+      linear-gradient(90deg,
+        transparent calc(33.333% - .5px), rgba(255,255,255,.06) 0, rgba(255,255,255,.06) calc(33.333% + .5px), transparent 0,
+        transparent calc(66.666% - .5px), rgba(255,255,255,.06) 0, rgba(255,255,255,.06) calc(66.666% + .5px), transparent 0);
+    }
+    .icons-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);column-gap:80px;row-gap:56px;place-items:center}
+    .ic img{width:108px;height:108px;transition:transform .28s ease;cursor:pointer}
+    .ic:hover img{transform:scale(1.06)}
 
-    /* ===== HERO ===== */
-    .hero{ display:grid; grid-template-columns:1.25fr 1fr; gap:50px; margin-top:120px; align-items:center }
+    /* Hover-fill overlay for icons — smooth (no glitch) */
+    .detail{position:absolute;inset:0;background:radial-gradient(1200px 600px at 20% 20%, rgba(255,255,255,.06), rgba(0,0,0,.72)), #1f1f1f;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;transform:scale(1.0);display:block}
+    .detail.show{opacity:1}
+    .detail .content{width:100%;max-width:980px;margin:0 auto;display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center;padding:28px}
+    .detail img{width:120px;height:120px}
+    .detail h3{font:700 24px "Space Grotesk",sans-serif;margin:0 0 6px}
+    .detail p{font:400 14px "JetBrains Mono",monospace;color:#ddd;margin:0 0 8px}
+    .detail ul{margin:0;padding-left:18px}
+    .detail li{font:500 14px "JetBrains Mono",monospace;margin:4px 0}
 
-    /* 6-icon FRAME — flat, square corners, no shadow */
-    .icon-frame{
-      position:relative; overflow:hidden; /* keep everything inside */
-      border:1px solid rgba(255,255,255,.10); /* thin stroke */
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0)); /* subtle whitish wash */
-      padding:20px;
-    }
-    .icons-grid{
-      display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:22px;
-      align-items:center; justify-items:center;
-      min-height:356px;
-    }
-    .ic{
-      background:transparent; border:0; padding:0; cursor:pointer;
-      display:grid; place-items:center; width:100%; height:100%;
-      transition: transform .2s ease;
-    }
-    .ic img{ width:88px; height:88px; object-fit:contain; pointer-events:none }
-    .ic:hover{ transform: translateY(-2px) }
+    .hi{font:700 200px "Space Grotesk",sans-serif;line-height:.8;margin:0;background:linear-gradient(#fff,#ddd);-webkit-background-clip:text;color:transparent}
+    .subline{font:400 28px "JetBrains Mono",monospace;color:#fff;margin:0 0 22px}
+    .cta-line{display:flex;gap:16px}
 
-    /* Overlay stays INSIDE the frame */
-    .detail{
-      position:absolute; inset:0; /* full frame */
-      background:#1f1f1f;
-      border:1px solid rgba(255,255,255,.08);
-      display:grid; grid-template-columns:0.52fr 0.48fr; align-items:center; gap:28px;
-      opacity:0; transform:scale(.985); pointer-events:none; transition:opacity .28s ease, transform .28s ease;
-      padding:28px;
-    }
-    .detail.visible{ opacity:1; transform:scale(1); pointer-events:auto }
-    .detail-left{ display:flex; align-items:center; justify-content:center }
-    .detail-left img{ width:80%; max-width:520px; height:auto; transition: transform .35s ease }
-    .detail.visible .detail-left img{ transform: scale(1.03) }
-    .detail-right{ padding-right:10px }
+    /* ===== Works strip ===== */
+    .works-strip{background:#262626;padding:20px 0;margin-top:102px;text-align:center}
+    .works-line{display:flex;gap:24px;justify-content:center;font:700 40px "JetBrains Mono",monospace}
+    .works-line .fade{color:rgba(255,255,255,.35)}
+    .works-line .center{color:#fff}
 
-    /* Helvetica type ramp for overlay */
-    .detail h3{
-      margin:0 0 10px 0;
-      font-family: Helvetica, Arial, "Inter", sans-serif;
-      font-weight:700;
-      font-size:24px; /* 20–24; using 24 */
-      line-height:1.25; color:#fff;
-    }
-    .detail p, .detail li{
-      font-family: Helvetica, Arial, "Inter", sans-serif;
-      font-weight:400; font-size:14px; color:#e8e8e8;
-    }
-    .detail p{ margin:0 0 12px 0 }
-    .detail ul{ margin:10px 0 0 0; padding-left:18px }
-    .detail .close{
-      position:absolute; top:10px; right:12px; font-size:22px; color:#ddd; background:transparent; border:none; cursor:pointer; line-height:1;
-      padding:6px; border-radius:6px;
-    }
-    .detail .close:hover{ background:rgba(255,255,255,.06) }
+    /* ===== Tabs (fixed 528×62) ===== */
+    .segmented{width:528px;height:62px;margin:28px auto 0;padding:6px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:1fr 1fr;position:relative;white-space:nowrap}
+    .seg{background:none;border:none;color:#fff;font:700 20px "JetBrains Mono",monospace;cursor:pointer;z-index:1}
+    .seg-active{position:absolute;top:6px;left:6px;height:calc(100% - 12px);width:calc(50% - 12px);border-radius:18px;background:linear-gradient(90deg,#EC0F6A,#F26D5F 50%,#FFC76B);transition:transform .35s ease;z-index:0}
+    .segmented[data-active="1"] .seg-active{transform:translateX(0)}
+    .segmented[data-active="2"] .seg-active{transform:translateX(100%)}
+    .segmented[data-active="1"] #tab-ux{text-shadow:0 0 14px rgba(255,255,255,.45)}
+    .segmented[data-active="2"] #tab-mg{text-shadow:0 0 14px rgba(255,255,255,.45)}
 
-    /* Right side text */
-    .hi{ font-family:"Kalnia", serif; font-size:200px; font-weight:700; line-height:.8; margin:0 0 14px 0;
-      letter-spacing:.5px; background:linear-gradient(#fff,#dcdcdc); -webkit-background-clip:text; background-clip:text; color:transparent;
-      filter:drop-shadow(0 2px 0 rgba(0,0,0,.25));
-    }
-    .subline{ font-family:"Kameron", serif; font-size:32px; color:#e8e8e8; margin:0 0 22px 0 }
-    .cta-line{ display:flex; align-items:center; gap:18px; margin-top:12px }
-    .muted{ color:var(--muted) }
+    /* ===== Cards row (single line) ===== */
+    .cards{margin:60px auto 0;display:flex;gap:52px;justify-content:center;/* fix clipping on hover */overflow:visible;padding-inline:var(--page-x)}
+    .card{position:relative;border-radius:16px;overflow:hidden;border:3px solid transparent;background:linear-gradient(#1f1f1f,#1f1f1f) padding-box,linear-gradient(120deg,rgba(255,255,255,.6),rgba(255,255,255,.12),rgba(255,255,255,.6)) border-box;transition:transform .3s ease, box-shadow .3s ease, filter .3s ease;will-change:transform}
+    .card img{width:360px;height:230px;object-fit:cover;transition:transform .35s ease}
+    .card:hover{z-index:5;transform:translateY(-8px) scale(1.02);box-shadow:0 16px 32px rgba(0,0,0,.45);filter:brightness(1.05)}
+    .card:hover img{transform:scale(1.03)}
 
-    /* ===== FULL-WIDTH "MY WORKS" STRIP ===== */
-    .works-strip{
-      width:100%; background:#262626; padding: 20px 0; /* 80px total height padding */
-      margin-top:120px;
-    }
-    .works-line{
-      display:flex; gap:24px; align-items:center; justify-content:center;
-      font-family:"Kameron", serif; font-weight:700; letter-spacing:.5px;
-      font-size:40px; line-height:1;
-      /* fade edges */
-      -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, rgba(0,0,0,0));
-              mask-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, rgba(0,0,0,0));
-    }
-    .works-line .fade{ color:rgba(255,255,255,.35) }
-    .works-line .center{ color:#fff }
+    /* ===== Footer (reusable) ===== */
+    footer{background:var(--header-bg);padding:24px var(--page-x);display:flex;justify-content:space-between;align-items:center;font:400 14px "JetBrains Mono",monospace;margin-top:120px}
+    footer .left,footer .right{display:flex;align-items:center;gap:14px}
 
-    /* ===== Segmented Tabs — radius 20 / 18 ===== */
-    .segmented{
-      width:456px; margin:28px auto 0; padding:6px; border-radius:20px;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10);
-      display:grid; grid-template-columns:1fr 1fr; position:relative;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-      height:62px;
-    }
-    .seg{ position:relative; z-index:2; height:100%; border-radius:18px; border:none; background:transparent; color:#fff;
-      font-weight:800; font-size:20px; letter-spacing:.2px; cursor:pointer; }
-    .seg-active{
-      position:absolute; z-index:1; top:6px; left:6px; height:calc(100% - 12px); width:calc(50% - 12px);
-      border-radius:18px; background:var(--seg-bg); transition: transform .35s ease;
-      box-shadow: 0 8px 24px rgba(0,0,0,.35);
-    }
-    .segmented[data-active="1"] .seg-active{ transform:translateX(0) }
-    .segmented[data-active="2"] .seg-active{ transform:translateX(100%) }
-
-    /* ===== Cards ===== */
-    .cards{ max-width:var(--container); margin:80px auto 0; display:grid; grid-template-columns:repeat(3,1fr); gap:34px; padding:0 20px }
-    .card{ position:relative; border-radius:22px; overflow:hidden; background:#1f1f1f; border:1px solid rgba(255,255,255,.08); box-shadow: 0 10px 30px rgba(0,0,0,.35); transition:transform .25s ease }
-    .card:hover{ transform:translateY(-6px) }
-    .card img{ display:block; width:100%; height:260px; object-fit:cover }
-    .card .meta{ position:absolute; left:0; right:0; bottom:0; background:linear-gradient(180deg, transparent, rgba(0,0,0,.65)); padding:18px 18px 22px; font:500 14px/1.45 Inter,sans-serif; color:#eaeaea }
-    .card .meta h4{ margin:0 0 8px; font:700 18px/1.25 Inter,sans-serif; color:#fff }
-
-    /* ===== Footer (more breathing room at bottom) ===== */
-    footer{ margin:140px 0 120px; display:flex; align-items:center; justify-content:center; gap:12px }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 1100px){
-      .hero{ grid-template-columns:1fr; margin-top:80px }
-      .hi{ font-size:140px }
-      .icons-grid{ min-height:320px }
-      .detail{ grid-template-columns:1fr 1fr }
-    }
-    @media (max-width: 860px){
-      .links.center{ display:none }
-      .works-line{ font-size:40px; gap:18px }
-      .segmented{ width:92%; max-width:456px }
-      .cards{ grid-template-columns:1fr }
-      .detail{ grid-template-columns:1fr; gap:10px; }
-      .detail-left img{ width:60% }
-    }
-    @media (max-width: 520px){
-      .works-line{ font-size:32px; gap:12px }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .marquee .track{ animation:none }
-      .seg-active{ transition:none }
+    /* ===== Responsive tweaks ===== */
+    @media (max-width:1100px){
+      :root{--page-x:24px}
+      .hero{grid-template-columns:1fr;gap:28px;margin-top:64px}
+      .detail .content{grid-template-columns:1fr}
+      .icons-grid{column-gap:72px;row-gap:64px}
     }
   </style>
 </head>
 <body>
-
-  <!-- ===== NAV ===== -->
-  <div class="nav-wrap">
-    <nav class="nav" aria-label="Primary">
-      <div class="brand">
-        <div class="avatar"><img src="assets/UXAI_LOGO.svg" alt="Samriddhi avatar"></div>
-        <div class="avatar-chip">Hi, I’m Samriddhi Tiwari</div>
-      </div>
-
-      <div class="links center">
-        <a href="#works">My Works</a><div class="divider" aria-hidden="true"></div>
-        <a href="https://www.linkedin.com/in/samriddhi-tiwari-2029a7223/" target="_blank" rel="noopener">About Me</a><div class="divider" aria-hidden="true"></div>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="Home">
+        <img src="assets/UXAI_LOGO.svg" alt="Avatar">
+        <!-- Hover tab: Hi, I'm Samriddhi -->
+        <div class="hello-badge" aria-hidden="true">
+          <div class="hello-chip">Hi, I'm Samriddhi</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#works">My Work</a>
+        <a href="https://www.linkedin.com/in/samriddhi-tiwari-2029a7223/" target="_blank" rel="noopener">About Me</a>
         <a href="https://medium.com/@samriddhidt" target="_blank" rel="noopener">I Write</a>
-      </div>
-
+      </nav>
       <div class="actions">
-        <a class="btn btn-ghost" href="#contact">Get In Touch <img src="assets/getintouch_icon.svg" alt=""></a>
-        <a class="btn btn-resume compact" href="resume.pdf" target="_blank" rel="noopener"><span>RESUME <img src="assets/resume_icon.svg" alt=""></span></a>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ===== ROLE MARQUEE ===== -->
-  <div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee">
-      <div class="track">
-        &nbsp;USER EXPERIENCE DESIGNER&nbsp;|&nbsp;USER RESEARCHER&nbsp;|&nbsp;INTERFACE &amp; INFORMATION DESIGNER&nbsp;|&nbsp;GROWTH &amp; MARKETING&nbsp;|&nbsp;SEO&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;USER EXPERIENCE DESIGNER&nbsp;|&nbsp;USER RESEARCHER&nbsp;|&nbsp;INTERFACE &amp; INFORMATION DESIGNER&nbsp;|&nbsp;GROWTH &amp; MARKETING&nbsp;|&nbsp;SEO&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="touch" href="mailto:hi@buildwithsam.work"><img src="assets/getintouch_icon.svg" alt=""> Get In Touch</a>
+        <a class="resume-btn" href="resume.pdf" target="_blank" rel="noopener"><img src="assets/resume_icon.svg" alt=""> RESUME</a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <main class="container">
+  <!-- Roller -->
+  <section class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>USER EXPERIENCE DESIGNER</span><span class="sep"></span>
+      <span>USER RESEARCHER</span><span class="sep"></span>
+      <span>INTERFACE &amp; INFORMATION DESIGNER</span><span class="sep"></span>
+      <span>GROWTH &amp; MARKETING</span><span class="sep"></span>
+      <span>SEO</span><span class="sep"></span>
+      <span>USER EXPERIENCE DESIGNER</span><span class="sep"></span>
+      <span>USER RESEARCHER</span><span class="sep"></span>
+      <span>INTERFACE &amp; INFORMATION DESIGNER</span><span class="sep"></span>
+      <span>GROWTH &amp; MARKETING</span><span class="sep"></span>
+      <span>SEO</span>
+    </div>
+  </section>
 
-    <!-- ===== HERO ===== -->
-    <section class="hero" aria-label="Hero">
-      <!-- SINGLE FRAME with 6 icons -->
-      <div class="icon-frame" id="frame">
-        <div class="icons-grid">
-          <button class="ic" data-key="flows"    aria-label="UX that flows"><img src="assets/1st_icon.svg" alt=""></button>
-          <button class="ic" data-key="data"     aria-label="Data-driven designs"><img src="assets/2nd_icon.svg" alt=""></button>
-          <button class="ic" data-key="visuals"  aria-label="Visuals that feel better"><img src="assets/3rd_icon.svg" alt=""></button>
-          <button class="ic" data-key="ideas"    aria-label="Ideas, but smart"><img src="assets/4th_icon.svg" alt=""></button>
-          <button class="ic" data-key="metrics"  aria-label="Moves metrics"><img src="assets/5th_icon.svg" alt=""></button>
-          <button class="ic" data-key="iterate"  aria-label="Iterate without irritation"><img src="assets/6th_icon.svg" alt=""></button>
-        </div>
-
-        <!-- overlay lives INSIDE the frame -->
-        <div class="detail" id="detail" aria-hidden="true">
-          <button class="close" id="detailClose" aria-label="Close">×</button>
-          <div class="detail-left"><img id="detailImg" src="" alt=""></div>
-          <div class="detail-right">
-            <h3 id="detailTitle">Title</h3>
-            <p id="detailSub">Subtitle</p>
-            <ul id="detailList"></ul>
-          </div>
-        </div>
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <!-- Icons frame -->
+    <div class="icon-frame" id="frame">
+      <div class="icons-grid">
+        <div class="ic" data-key="flows"><img src="assets/1st_icon.svg" alt=""></div>
+        <div class="ic" data-key="data"><img src="assets/2nd_icon.svg" alt=""></div>
+        <div class="ic" data-key="visuals"><img src="assets/3rd_icon.svg" alt=""></div>
+        <div class="ic" data-key="ideas"><img src="assets/4th_icon.svg" alt=""></div>
+        <div class="ic" data-key="metrics"><img src="assets/5th_icon.svg" alt=""></div>
+        <div class="ic" data-key="iterate"><img src="assets/6th_icon.svg" alt=""></div>
       </div>
+      <!-- hover-fill overlay -->
+      <div class="detail" id="detail"><!-- kept always in DOM for smoothness --></div>
+    </div>
 
-      <div>
-        <h1 class="hi">hi!</h1>
-        <p class="subline">I’m <b>Samriddhi Tiwari</b>, a growth-focused UX designer.</p>
-
-        <div class="cta-line">
-          <a class="btn btn-resume" href="resume.pdf" target="_blank" rel="noopener"><span>RESUME <img src="assets/resume_icon.svg" alt=""></span></a>
-          <a class="btn btn-ghost" href="#contact" aria-label="Get in touch">Get In Touch <img src="assets/getintouch_icon.svg" alt=""></a>
-        </div>
-
-        <p class="muted" style="margin-top:14px">Hover (or tap) an icon to see my approach.</p>
+    <div>
+      <h1 class="hi">hi!</h1>
+      <p class="subline">I’m <b>Samriddhi Tiwari</b>, a growth-focused UX designer.</p>
+      <div class="cta-line">
+        <a class="resume-btn" href="resume.pdf" target="_blank" rel="noopener"><img src="assets/resume_icon.svg" alt=""> RESUME</a>
+        <a class="touch" href="#contact"><img src="assets/getintouch_icon.svg" alt=""> Get In Touch</a>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- ===== FULL-WIDTH MY WORKS STRIP ===== -->
+  <!-- My Works strip -->
   <section class="works-strip" id="works">
     <div class="works-line">
       <span class="fade">My Works</span>
@@ -347,110 +233,77 @@
     </div>
   </section>
 
-  <main class="container">
-    <!-- ===== Segmented Tabs (456×62) ===== -->
-    <div class="segmented" id="segmented" data-active="1" role="tablist" aria-label="Work type">
-      <span class="seg-active" aria-hidden="true"></span>
-      <button class="seg" id="tab-ux" role="tab" aria-selected="true">User Experience</button>
-      <button class="seg" id="tab-mg" role="tab" aria-selected="false">Marketing &amp; Growth</button>
+  <!-- Tabs -->
+  <div class="segmented" id="segmented" data-active="1" role="tablist" aria-label="Work type">
+    <span class="seg-active" aria-hidden="true"></span>
+    <button class="seg" id="tab-ux" role="tab" aria-selected="true">User Experience</button>
+    <button class="seg" id="tab-mg" role="tab" aria-selected="false">Marketing &amp; Growth</button>
+  </div>
+
+  <!-- Cards (single row) -->
+  <div class="cards">
+    <a class="card" href="https://www.behance.net/gallery/193478235/Sahayata-Setu-App-Case-Study" target="_blank" rel="noopener"><img src="assets/1st_card.png" alt="Sahayata Setu case study"></a>
+    <a class="card" href="OneProjectOnePayment/index.html" target="_blank" rel="noopener"><img src="assets/one_project_one_payment.png" alt="One Project, One Payment"></a>
+    <a class="card" href="https://www.behance.net/gallery/194370685/f16s-Logo-and-Brand-Design" target="_blank" rel="noopener"><img src="assets/3rd_card.png" alt="f16s — Logo & Brand"></a>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="left">Made w <img src="assets/heart.svg" width="14" alt="heart"> By Samriddhi.</div>
+    <div class="right">
+      <a class="touch" href="mailto:hi@buildwithsam.work"><img src="assets/getintouch_icon.svg" alt=""> Get In Touch</a>
+      <a class="resume-btn" href="resume.pdf" target="_blank" rel="noopener"><img src="assets/resume_icon.svg" alt=""> RESUME</a>
     </div>
-
-    <!-- ===== Cards ===== -->
-    <div class="cards" id="cards">
-      <a class="card" href="https://www.behance.net/gallery/193478235/Sahayata-Setu-App-Case-Study" target="_blank" rel="noopener">
-        <img src="assets/1st_card.png" alt="Sahayata Setu — UI/UX Case Study">
-        <div class="meta"><h4>Sahayata Setu — UI/UX Case Study</h4><div>Surface-level blurb goes here. Replace with your real 1–2 line summary.</div></div>
-      </a>
-
-      <a class="card" href="https://www.behance.net/gallery/194370685/f16s-Logo-and-Brand-Design" target="_blank" rel="noopener">
-        <img src="assets/2nd_card.png" alt="f16s — Logo & Brand">
-        <div class="meta"><h4>f16s — Logo &amp; Brand Design</h4><div>Short description placeholder for the project card. Replace later.</div></div>
-      </a>
-
-      <a class="card" href="https://www.behance.net/gallery/194389565/f16s-Website-Design" target="_blank" rel="noopener">
-        <img src="assets/2nd_card.png" alt="f16s Website Design">
-        <div class="meta"><h4>f16s — Website Design</h4><div>One more teaser block to complete the row. Swap the image soon.</div></div>
-      </a>
-    </div>
-
-    <!-- ===== Footer ===== -->
-    <footer id="contact">
-      <a class="btn btn-ghost" href="mailto:hi@buildwithsam.work">Get In Touch <img src="assets/getintouch_icon.svg" alt=""></a>
-      <a class="btn btn-resume compact" href="resume.pdf" target="_blank" rel="noopener"><span>RESUME <img src="assets/resume_icon.svg" alt=""></span></a>
-    </footer>
-  </main>
+  </footer>
 
   <script>
-    // Segmented control
+    /* segmented control */
     const seg = document.getElementById('segmented');
     const tabUX = document.getElementById('tab-ux');
     const tabMG = document.getElementById('tab-mg');
     function setSeg(n){
-      seg.dataset.active = String(n);
+      seg.dataset.active=String(n);
       tabUX.setAttribute('aria-selected', n===1 ? 'true' : 'false');
       tabMG.setAttribute('aria-selected', n===2 ? 'true' : 'false');
     }
     tabUX.addEventListener('click',()=>setSeg(1));
     tabMG.addEventListener('click',()=>setSeg(2));
 
-    // Icon overlay logic (inside frame), hover delay desktop, tap on mobile
-    const data = {
-      flows:{ img:'assets/1st_icon.svg', title:'I Design UX That Flows.',
-        sub:'Designing UX think like the user before the user even clicks.',
-        bullets:['Journey Mapping','Task-First Wireframes','No Dead-Ends, Ever.'] },
-      data:{ img:'assets/2nd_icon.svg', title:'Creating Data-Driven Designs.',
-        sub:'From Bounce Rates To Heatmaps, I Decode The Why, Before Designing The What.',
-        bullets:['User Analytics','A/B Experiments','Conversion-Driven Layouts'] },
-      visuals:{ img:'assets/3rd_icon.svg', title:'Visuals That Look Good & Feel Better',
-        sub:'For Me, It’s Not Just About Pretty Pixels, It’s About Purpose.',
-        bullets:['Micro-Interactions','Design Systems','Consistency = Credibility'] },
-      ideas:{ img:'assets/4th_icon.svg', title:'Ideas, But Make It Smart',
-        sub:'Not Just Wild Ideas, But Sharp & Strategic Ones.',
-        bullets:['Brainstorm Sprints','Creative Strategy','Problem > Solution > Repeat'] },
-      metrics:{ img:'assets/5th_icon.svg', title:'Design That Moves Metrics',
-        sub:'Whether It’s CTRs Or Cart Completions, my UX is built to perform.',
-        bullets:['SEO-Aware Flows','Funnel Optimization','UX × Biz Impact'] },
-      iterate:{ img:'assets/6th_icon.svg', title:'Iterating W/O Getting Irritated :)',
-        sub:'Feedback? Bring It On.',
-        bullets:['Feedback-First Process','Usability Tests'] }
+    /* 6-icon hover — smooth fill frame, revert on leave */
+    const data={
+      flows:{img:'assets/1st_icon.svg', title:'I Design UX That Flows.', sub:'Designing UX that thinks like the user before the user even clicks.', bullets:['Journey Mapping','Task‑First Wireframes','No Dead‑Ends, Ever.']},
+      data:{img:'assets/2nd_icon.svg', title:'Creating Data‑Driven Designs.', sub:'From bounce rates to heatmaps, decode the why before designing the what.', bullets:['User Analytics','A/B Experiments','Conversion‑Driven Layouts']},
+      visuals:{img:'assets/3rd_icon.svg', title:'Visuals That Look Good & Feel Better', sub:"Not just pretty pixels — purpose‑led visuals that ship.", bullets:['Micro‑interactions','Design Systems','Consistency = Credibility']},
+      ideas:{img:'assets/4th_icon.svg', title:'Ideas, But Make It Smart', sub:'Not wild. Strategic. The kind that solve, scale, and stick.', bullets:['Brainstorm Sprints','Creative Strategy','Problem → Solution → Repeat']},
+      metrics:{img:'assets/5th_icon.svg', title:'Design That Moves Metrics', sub:'Whether CTRs or Cart Completions, I build to perform.', bullets:['SEO‑Aware Flows','Funnel Optimization','UX × Biz Impact']},
+      iterate:{img:'assets/6th_icon.svg', title:'Iterating W/O Getting Irritated :)', sub:'Feedback? Bring it on.', bullets:['Feedback‑First Process','Usability Tests']},
     };
 
-    const isCoarse = window.matchMedia('(pointer:coarse)').matches;
-    const detail   = document.getElementById('detail');
-    const dImg     = document.getElementById('detailImg');
-    const dTitle   = document.getElementById('detailTitle');
-    const dSub     = document.getElementById('detailSub');
-    const dList    = document.getElementById('detailList');
-    const dClose   = document.getElementById('detailClose');
-    let hoverTimer=null;
+    const frame  = document.getElementById('frame');
+    const detail = document.getElementById('detail');
 
-    function openDetail(key){
-      const it = data[key]; if(!it) return;
-      dImg.src = it.img; dImg.alt = key;
-      dTitle.textContent = it.title;
-      dSub.textContent   = it.sub;
-      dList.innerHTML    = it.bullets.map(b=>`<li>${b}</li>`).join('');
-      detail.classList.add('visible'); detail.setAttribute('aria-hidden','false');
+    function render(key){
+      const it=data[key];
+      detail.innerHTML = `
+        <div class="content">
+          <img src="${it.img}" alt=""/>
+          <div>
+            <h3>${it.title}</h3>
+            <p>${it.sub}</p>
+            <ul>${it.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+          </div>
+        </div>`;
+      detail.classList.add('show');
     }
-    function closeDetail(){ detail.classList.remove('visible'); detail.setAttribute('aria-hidden','true') }
 
     document.querySelectorAll('.ic').forEach(ic=>{
-      const key = ic.dataset.key;
-      if(!isCoarse){
-        ic.addEventListener('mouseenter', ()=>{
-          clearTimeout(hoverTimer);
-          hoverTimer = setTimeout(()=>openDetail(key), 1100);
-        });
-        ic.addEventListener('mouseleave', ()=> clearTimeout(hoverTimer));
-      }
-      ic.addEventListener('click', ()=>{
-        clearTimeout(hoverTimer);
-        openDetail(key);
-      });
+      const key=ic.dataset.key;
+      ic.addEventListener('mouseenter',()=>render(key));
+      ic.addEventListener('focus',()=>render(key));
+      ic.addEventListener('mouseleave',()=>detail.classList.remove('show'));
+      ic.addEventListener('blur',()=>detail.classList.remove('show'));
     });
-
-    dClose.addEventListener('click', closeDetail);
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDetail() });
+    frame.addEventListener('mouseleave',()=>detail.classList.remove('show'));
   </script>
 </body>
 </html>
